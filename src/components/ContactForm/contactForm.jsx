@@ -2,6 +2,8 @@ import React from 'react';
 import { nanoid } from 'nanoid';
 import css from '../ContactForm/contactForm.module.css';
 
+const LOCALSTORAGE_KEY = 'contact';
+
 export class ContactsForm extends React.Component {
   state = {
     name: '',
@@ -23,10 +25,16 @@ export class ContactsForm extends React.Component {
       alert(`${value} is already in contacts.`);
       this.setState({ [name]: '' });
     }
+
+    localStorage.setItem(
+      LOCALSTORAGE_KEY,
+      JSON.stringify({ name: this.state.name, number: this.state.number })
+    );
   };
 
   resetForm = () => {
     this.setState({ name: '', number: '' });
+    localStorage.removeItem(LOCALSTORAGE_KEY);
   };
 
   handleSubmit = e => {
