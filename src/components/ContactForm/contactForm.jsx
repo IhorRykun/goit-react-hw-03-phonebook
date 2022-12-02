@@ -2,7 +2,7 @@ import React from 'react';
 import { nanoid } from 'nanoid';
 import css from '../ContactForm/contactForm.module.css';
 
-const LOCALSTORAGE_KEY = 'contact';
+
 
 export class ContactsForm extends React.Component {
   state = {
@@ -15,6 +15,7 @@ export class ContactsForm extends React.Component {
     let { name, value } = e.currentTarget;
     this.setState({ isDisabled: false });
     this.setState({ [name]: value });
+
     let finder = this.props.contacts.find(
       contact =>
         contact.name.toLowerCase() === value.toLowerCase() ||
@@ -25,16 +26,10 @@ export class ContactsForm extends React.Component {
       alert(`${value} is already in contacts.`);
       this.setState({ [name]: '' });
     }
-
-    localStorage.setItem(
-      LOCALSTORAGE_KEY,
-      JSON.stringify({ name: this.state.name, number: this.state.number })
-    );
   };
 
   resetForm = () => {
     this.setState({ name: '', number: '' });
-    localStorage.removeItem(LOCALSTORAGE_KEY);
   };
 
   handleSubmit = e => {

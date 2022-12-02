@@ -4,11 +4,22 @@ import { Filters } from 'components/filter/filter';
 import React, { Component } from 'react';
 import css from '../App/app.module.css';
 
+
+const LOCALSTORAGE_KEY = 'contact';
+
 export class App extends Component {
   state = {
     contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const data = localStorage.getItem(LOCALSTORAGE_KEY);
+    const parsedData = JSON.parse(data);
+    if (parsedData) {
+      this.setState({ contacts: parsedData });
+    }
+  }
 
   addContact = contact => {
     this.setState(prevState => ({
@@ -32,6 +43,15 @@ export class App extends Component {
       contacts: this.state.contacts.filter(item => item.id !== elemToRemove),
     });
   };
+
+  componentDidUpdate(prevState, prevProps) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem(
+        LOCALSTORAGE_KEY,
+        JSON.stringify(this.state.contacts)
+      );
+    }
+  }
 
   render() {
     return (
